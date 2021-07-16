@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from "styled-components";
-import MainGrid from "./src/components/MainGrid/index";
-import Box from "./src/components/Box/index";
+import MainGrid from "../src/components/MainGrid/index";
+import Box from "../src/components/Box/index";
 import {
   AlurakutMenu,
   AlurakutProfileSidebarMenuDefault,
   OrkutNostalgicIconSet,
-} from "./src/lib/AlurakutCommons";
+} from "../src/lib/AlurakutCommons";
 import { ProfileRelationsBoxWrapper } from "../src/components/ProfileRelations/index";
 
 // const Title = styled.h1`

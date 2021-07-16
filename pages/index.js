@@ -7,7 +7,7 @@ import {
   AlurakutProfileSidebarMenuDefault,
   OrkutNostalgicIconSet,
 } from "./src/lib/AlurakutCommons";
-import { ProfileRelationsBoxWrapper } from "./src/components/ProfileRelations/index";
+import { ProfileRelationsBoxWrapper } from "../src/components/ProfileRelations/index";
 
 // const Title = styled.h1`
 //   font-size: 50px;

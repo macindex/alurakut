@@ -20,7 +20,14 @@ function ProfileSidebar(props){
 
 export default function Home() {
   const gitHubUser = 'elolourenco';
-  const pessoasFavoritas = ['macindex','omariosouto', 'peas', 'elolourenco']
+  const pessoasFavoritas = [
+  'omariosouto', 
+  'peas', 
+  'elolourenco', 
+  'macindex',
+  'felipefialho', 
+  'juunegreiros'
+  ]
 
   return (
     <>
@@ -34,7 +41,7 @@ export default function Home() {
       <div className="welcomeArea" style={{ gridArea: 'welcomeArea' }}>
         <Box>
           <h1 className="title">
-          Bem vindo(a)
+            Bem vindo(a)
           </h1>
          <OrkutNostalgicIconSet />
         </Box>
@@ -50,7 +57,7 @@ export default function Home() {
           Pessoas da Comunidade ({pessoasFavoritas.length})
         </h2>
         
-          
+          <ul>
           {pessoasFavoritas.map((iAtual)=>{
             return (
               <li>
@@ -61,11 +68,8 @@ export default function Home() {
               </li>
             )
           })}
+          </ul>
         </ProfileRelationsBoxWrapper>
-
-        <Box>
-          Comunidades
-        </Box>
       </div>
     </MainGrid>
     </>

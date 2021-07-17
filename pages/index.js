@@ -30,13 +30,40 @@ function ProfileSidebar(props) {
     </Box>
   );
 }
+function ProfileRelationsBox(props){
+  return (
+    <ProfileRelationsBoxWrapper>
+            <h2 className="smalltitle">
+              {props.title} ({props.items.length})
+            </h2>
+
+            <ul>
+              {seguidores.map((iAtual) => {
+                return (
+                  <li key={iAtual}>
+                    <a href={`/users/${iAtual}`} >
+                      <img src={`https://github.com/${iAtual}.png`} />
+                      <span>{iAtual.title}</span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </ProfileRelationsBoxWrapper>
+  )
+}
 
 export default function Home() {
   const [comunidades, setComunidades] = React.useState([{
     id: '',
     title: 'Eu odeio acordar cedo',
     image: 'https://pbs.twimg.com/profile_images/143696361/avatar_400x400.jpg'
-  }]);
+  },{
+    id: '',
+    title: 'Bonde dos cu sujo',
+    image: 'https://img.elo7.com.br/product/zoom/376BFA1/caneca-unicornio-bom-dia-cu-sujo-frases.jpg'
+  }
+]);
   const gitHubUser = "macindex";
   // const comunidades = ['Alurakut'];
   const pessoasFavoritas = [
@@ -47,6 +74,22 @@ export default function Home() {
     "felipefialho",
     "juunegreiros",
   ];
+
+  // 0 - Pegar o array de dados do github
+  // 1 - Criar box que vai ter um map baseado nos itens do array
+const [seguidores, setSeguidores] = React.useState([]);
+
+  React.useEffect(function(){
+    
+  fetch('https://api.github.com/users/macindex/followers')
+  .then(function(resServer){
+    return resServer.json();
+  })
+  .then(function(resCompleta){
+    setSeguidores(resCompleta)
+  })
+  }, [])
+
 
   return (
     <>
@@ -104,6 +147,7 @@ export default function Home() {
           className="profileRelationsArea"
           style={{ gridArea: "profileRelationsArea" }}
         >
+          <ProfileRelationsBox title="seguidores" items={seguidores} />
           <ProfileRelationsBoxWrapper>
           <ul>
               {comunidades.map((iAtual) => {

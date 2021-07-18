@@ -38,7 +38,7 @@ function ProfileRelationsBox(props){
             </h2>
 
             <ul>
-              {seguidores.map((iAtual) => {
+              {/* {seguidores.map((iAtual) => {
                 return (
                   <li key={iAtual}>
                     <a href={`/users/${iAtual}`} >
@@ -47,7 +47,7 @@ function ProfileRelationsBox(props){
                     </a>
                   </li>
                 );
-              })}
+              })} */}
             </ul>
           </ProfileRelationsBoxWrapper>
   )

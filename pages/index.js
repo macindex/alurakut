@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import styled from "styled-components";
 import MainGrid from "../src/components/MainGrid/index";
 import Box from "../src/components/Box/index";
@@ -30,15 +30,15 @@ function ProfileSidebar(props) {
     </Box>
   );
 }
-function ProfileRelationsBox(props){
+function ProfileRelationsBox(props) {
   return (
     <ProfileRelationsBoxWrapper>
-            <h2 className="smalltitle">
-              {props.title} ({props.items.length})
-            </h2>
+      <h2 className="smalltitle">
+        {props.title} ({props.items.length})
+      </h2>
 
-            <ul>
-              {/* {seguidores.map((iAtual) => {
+      <ul>
+        {/* {seguidores.map((iAtual) => {
                 return (
                   <li key={iAtual}>
                     <a href={`/users/${iAtual}`} >
@@ -48,22 +48,24 @@ function ProfileRelationsBox(props){
                   </li>
                 );
               })} */}
-            </ul>
-          </ProfileRelationsBoxWrapper>
-  )
+      </ul>
+    </ProfileRelationsBoxWrapper>
+  );
 }
 
 export default function Home() {
-  const [comunidades, setComunidades] = React.useState([{
-    id: '',
-    title: 'Eu odeio acordar cedo',
-    image: 'https://pbs.twimg.com/profile_images/143696361/avatar_400x400.jpg'
-  },{
-    id: '',
-    title: 'Bonde dos cu sujo',
-    image: 'https://img.elo7.com.br/product/zoom/376BFA1/caneca-unicornio-bom-dia-cu-sujo-frases.jpg'
-  }
-]);
+  const [comunidades, setComunidades] = React.useState([{}]);
+    
+      //   id: '',
+      //   title: 'Eu odeio acordar cedo',
+      //   image: 'https://pbs.twimg.com/profile_images/143696361/avatar_400x400.jpg'
+      // },{
+      //   id: '',
+      //   title: 'Bonde dos cu sujo',
+      //   image: 'https://img.elo7.com.br/product/zoom/376BFA1/caneca-unicornio-bom-dia-cu-sujo-frases.jpg'
+      // }
+    
+  
   const gitHubUser = "macindex";
   // const comunidades = ['Alurakut'];
   const pessoasFavoritas = [
@@ -77,19 +79,45 @@ export default function Home() {
 
   // 0 - Pegar o array de dados do github
   // 1 - Criar box que vai ter um map baseado nos itens do array
-const [seguidores, setSeguidores] = React.useState([]);
+  const [seguidores, setSeguidores] = React.useState([]);
 
-  React.useEffect(function(){
-    
-  fetch('https://api.github.com/users/macindex/followers')
-  .then(function(resServer){
-    return resServer.json();
-  })
-  .then(function(resCompleta){
-    setSeguidores(resCompleta)
-  })
-  }, [])
+  React.useEffect(function () {
+    fetch("https://api.github.com/users/macindex/followers")
+      .then(function (resServer) {
+        return resServer.json();
+      })
+      .then(function (resCompleta) {
+        setSeguidores(resCompleta);
+      });
 
+    fetch("https://graphql.datocms.com", {
+      method: "POST",
+      headers: {
+        Authorization: "1a9a769ba7db7679a3a8663d62616f",
+        "Content-Type": "application/json",
+        'Accept': "application/json",
+      },
+      body: JSON.stringify({
+        "query": `{
+      allCommunities{
+        id
+        title
+        imageUrl
+        creatorSlug
+      }
+    }
+    `
+      })
+    })
+      .then((response) => response.json())
+      .then((resCompleta) => {
+        const comunidadesDato = resCompleta.data.allCommunities;
+        // console.log(comunidades);
+        setComunidades(comunidadesDato)
+        
+        
+      });
+  }, []);
 
   return (
     <>
@@ -106,21 +134,23 @@ const [seguidores, setSeguidores] = React.useState([]);
           </Box>
           <Box>
             <h2 className="subTitle">O que você deseja fazer?</h2>
-            <form onSubmit={function handleCriarComunidade(e){
-              e.preventDefault();
-              const dadosForm = new FormData(e.target);
+            <form
+              onSubmit={function handleCriarComunidade(e) {
+                e.preventDefault();
+                const dadosForm = new FormData(e.target);
 
-              const comunidade = {
-                id: new Date().toISOString(),
-                title: dadosForm.get('title'),
-                image: dadosForm.get('image'),
-              }
-              
-              const comAtualizadas = [...comunidades, comunidade];
-              setComunidades(comAtualizadas)
-              // comunidades.push('Alura stars')
-              // setComunidades('Alura stars')
-            }}>
+                const comunidade = {
+                  id: new Date().toISOString(),
+                  title: dadosForm.get("title"),
+                  image: dadosForm.get("image"),
+                };
+
+                const comAtualizadas = [...comunidades, comunidade];
+                setComunidades(comAtualizadas);
+                // comunidades.push('Alura stars')
+                // setComunidades('Alura stars')
+              }}
+            >
               <div>
                 <input
                   placeholder="Qual vai sero nome da sua comunidade?"
@@ -136,9 +166,7 @@ const [seguidores, setSeguidores] = React.useState([]);
                   aria-label="Qual vai ser o nome da sua comunidade ?"
                 />
               </div>
-              <button>
-                Criar comunidade
-              </button>
+              <button>Criar comunidade</button>
             </form>
           </Box>
         </div>
@@ -149,12 +177,12 @@ const [seguidores, setSeguidores] = React.useState([]);
         >
           <ProfileRelationsBox title="seguidores" items={seguidores} />
           <ProfileRelationsBoxWrapper>
-          <ul>
+            <ul>
               {comunidades.map((iAtual) => {
                 return (
                   <li key={iAtual}>
-                    <a href={`/users/${iAtual}`}>
-                      <img src={iAtual.image} />
+                    <a href={`/communities/${iAtual.id}`}>
+                      <img src={iAtual.imageUrl} />
                       <span>{iAtual.title}</span>
                     </a>
                   </li>

@@ -140,13 +140,28 @@ export default function Home() {
                 const dadosForm = new FormData(e.target);
 
                 const comunidade = {
-                  id: new Date().toISOString(),
+                  // id: new Date().toISOString(),
                   title: dadosForm.get("title"),
-                  image: dadosForm.get("image"),
+                  imageUrl: dadosForm.get("image"),
+                  creatorSlug: gitHubUser,
                 };
 
-                const comAtualizadas = [...comunidades, comunidade];
-                setComunidades(comAtualizadas);
+                fetch('/api/comunidades', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(comunidade)
+                })
+                .then(async(res) => {
+                  const dados = await res.json();
+                  const comunidade = dados.regCriado;
+                  const comAtualizadas = [...comunidades, comunidade];
+                  setComunidades(comAtualizadas);
+                
+                })
+
+                
                 // comunidades.push('Alura stars')
                 // setComunidades('Alura stars')
               }}
